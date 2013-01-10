@@ -1,0 +1,55 @@
+body {
+    background-color: black;
+    margin: 0px;
+}
+
+div#interface {
+	position:absolute;
+	width: 100%;
+}
+
+/* UI */
+button.screenSelect {
+	width: 150px;
+	margin-left: 5px;
+	margin-top: 5px;
+}
+
+div#planetSelect {
+	margin-left: 5px;
+	margin-top: 15px;
+}
+
+div#mainMenu {
+	float: right;	
+}
+
+img {
+	opacity: 0.8;
+}
+
+img:hover {
+	opacity: 1.0;	
+}
+
+table#shipBuilderTable {
+	float: right;
+}
+table#shipBuilderTable td {
+	background: white;
+	width: 100px;
+	height: 100px;
+}
+
+div#research span {
+	height:120px;
+	float:left;
+	margin:15px;
+}
+
+div#optionsMenu > button {
+	display: block;
+	margin-right: auto;
+	margin-left: auto;
+	width: 300;
+}
