@@ -39,6 +39,11 @@ starsgl.Scene.prototype.init = function() {
 	this.container.addEventListener("contextmenu", this.onContextMenu.bind(this), false);
 	THREEx.WindowResize(this.renderer, this.camera);
 	
+	$(document).on("mousewheel", function(event) {
+		$("#planet-info-1").fadeOut("slow");		
+		$("#planet-info-2").fadeOut("slow");		
+	});
+	
 	$(document).keyup(function(event) {
 		if(event.which === 27) { // esc
 			$("#optionsMenu").dialog("open");
