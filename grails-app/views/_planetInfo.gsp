@@ -1,23 +1,13 @@
-<style>
-	#planet-info-1, #planet-info-2 {
-		width: 300px;
-		height: 300px;
-		padding: 0.5em;
-		margin: 0.5em;
-		visibility: hidden;
-	}
+<div id="planet-info">
+	<div id="planet-info-1" class="ui-widget-content">
+		<h3 class="ui-widget-header">Info page 1</h3>
+	</div>
 	
-	#planet-info-1 h3, #planet-info-2 h3 {
-		font-family: Verdana;
-		text-align: center;
-		margin: 0;
-	}
-</style>
-
-<div id="planet-info-1" class="ui-widget-content">
-	<h3 class="ui-widget-header">Info page 1</h3>
-</div>
-
-<div id="planet-info-2" class="ui-widget-content">
-	<h3 class="ui-widget-header">Info page 2</h3>
+	<div id="planet-info-atmosphere" class="ui-widget-content">
+		<h3 class="ui-widget-header">Atmosphere</h3>
+		
+		<div id="radiation-slider" class="slider"></div>
+		<div id="gravity-slider" class="slider"></div>
+		<div id="temperature-slider" class="slider"></div>
+	</div>
 </div>

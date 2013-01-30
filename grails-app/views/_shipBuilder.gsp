@@ -1,9 +1,9 @@
-<div id="shipBuilder" title="Ship Builder">
+<div id="ship-builder" title="Ship Builder">
 	<div id="draggable" style="display:inline-block; background:grey; width:100px; height:100px;">
 		some propulsion tech
 	</div>
 	
-	<table id="shipBuilderTable">
+	<table id="ship-builder-table">
 		<tr>
 			<td></td>
 			<td id="snaptarget">propulsion</td>

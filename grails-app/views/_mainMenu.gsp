@@ -1,4 +1,4 @@
-<div id="mainMenu" class="menu">
-	<button id="shipBuilderButton">Ship Builder</button>
-	<button id="researchButton">Research</button>
+<div id="main-menu">
+	<button id="ship-builder-button">Ship Builder</button>
+	<button id="research-button">Research</button>
 </div>
