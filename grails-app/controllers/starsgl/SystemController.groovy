@@ -1,7 +1,16 @@
 package starsgl
 
 class SystemController {
-
+	
+	def getByName(String name) {
+		def system = System.findByName(name)
+		
+		render(contentType: "text/json") {
+			system
+		}
+	}
+	
+	// legacy generation
     def generateSystem() { 
 		int planetMax = 12
 		int planetMin = 4
@@ -61,5 +70,42 @@ class SystemController {
 		render(contentType: "text/json") {
 			planets
 		}
+	}
+	
+	// legacy generation
+	def generateSystem2() {
+		def system = new System()
+		system.setName("test")
+		
+		Random random = new Random()
+		
+		int planetMax = 12
+		int planetMin = 3
+		int planetRadiusMax = 150
+		int planetRadiusMin = 50
+		
+		int planetR = 0 // total distance between center of planet and center of sun
+		int planetIncrement = 700 // distance between each orbit pattern
+		
+		int planetNum = random.nextInt(planetMax - planetMin) + planetMin
+		
+		for(int i = 0; i < planetNum; i++) {
+			planetR += planetIncrement
+			
+			int radius = random.nextInt(planetRadiusMax - planetRadiusMin) + planetRadiusMin // random radius
+			
+			// random position
+			// reference: http://math.stackexchange.com/questions/253108/generate-random-points-on-the-perimeter-of-a-circle
+			double planetAngle = Math.random() * Math.PI * 2
+			int x = Math.cos(planetAngle) * planetR
+			int y = 0
+			int z = Math.sin(planetAngle) * planetR
+			
+			// add planet
+			def planet = new Planet(x: x, y: y, z: z, radius: radius)
+			system.addToPlanets(planet)
+		}
+		
+		system.save(flush: true);
 	}
 }

@@ -1,6 +1,6 @@
-starsgl.MainCanvas = function() {	
+starsgl.MainCanvas = function(startingSystemName) {	
+	this.startingSystemName = startingSystemName;
 	this.focusedObject = null;
-	this.activeView = null;
 	
 	// initialize three.js 
 	this.container = document.getElementById("main-canvas");
@@ -27,18 +27,20 @@ starsgl.MainCanvas = function() {
 	this.stats.domElement.style.bottom = 0;
 	this.stats.domElement.style.zIndex = 100;
 	this.container.appendChild(this.stats.domElement);		
-	
+
 	// initialize system and galaxy view
 	this.systemView = new starsgl.SystemView(this);
 	this.galaxyView = new starsgl.GalaxyView(this);
 	
-	// get player starting information 
-	this.activeView = this.systemView;  // TODO: make this an ajax call		
+	// initialize activeView to system
+	this.activeView = this.systemView;  // TODO: this could change in the future
 	
 	// initialize events
 	$(document).keyup(this.onKeyup.bind(this));	
 	this.container.addEventListener("dblclick", this.onDblClick.bind(this), false);
 	this.container.addEventListener("contextmenu", this.onContextMenu.bind(this), false);
+	this.mouseTimeout = null; // reference: http://stackoverflow.com/questions/609965/detecting-when-the-mouse-is-not-moving
+	this.container.addEventListener("mousemove", this.onMouseMove.bind(this), false);
 	$(document).on("mousewheel", this.onMouseWheel.bind(this));	
 	
 	// draw starting view
@@ -67,11 +69,25 @@ starsgl.MainCanvas.prototype.update = function() {
 };
 
 starsgl.MainCanvas.prototype.changeView = function(view) {
-	this.activeView = view;
-
-	var that = this; // TODO: is there a way to use bind instead?
+	var self = this; // TODO: is there a way to use bind instead?
+	var oldView = this.activeView;
+	
+	this.activeView = view; // set the new view
+	
 	$("#main-canvas").fadeOut("slow", function() {
-		that.activeView.draw();	
+		if(oldView instanceof starsgl.SystemView) { // exiting system
+			// compute the position of the new camera location
+			var A = new THREE.Vector3(0, 0, 0);
+			var B = new THREE.Vector3(oldView.JSON["x"], oldView.JSON["y"], oldView.JSON["z"]);
+			var AB = new THREE.Vector3((B.x - A.x), (B.y - A.y), (B.z - A.z));
+			AB.normalize();
+			var newPoint = B.sub((AB.multiplyScalar(starsgl.SYSTEM_RADIUS + starsgl.FOCUS_DISTANCE)));			
+			
+			self.camera.position.set(newPoint.x, newPoint.y, newPoint.z);
+			self.controls.center.set(oldView.JSON["x"], oldView.JSON["y"], oldView.JSON["z"]);			
+		}
+		
+		self.activeView.draw();	 // draw the new view
 		$("#main-canvas").fadeIn("slow");	
 	});
 }
@@ -162,6 +178,27 @@ starsgl.MainCanvas.prototype.onKeyup = function(event) {
 			z: starsgl.SYSTEM_CAMERA_START_Z}, 500)
 		.start();			
 	}	
+};
+
+starsgl.MainCanvas.prototype.onMouseMove = function(event) {
+	clearTimeout(this.mouseTimeout);
+	$(document).tooltip("destroy");
+	
+	this.mouseTimeout = setTimeout(function() {
+		var vector = new THREE.Vector3((event.clientX / window.innerWidth) * 2 - 1, - (event.clientY / window.innerHeight) * 2 + 1, 0.5);
+		this.projector.unprojectVector(vector, this.camera);
+		var raycaster = new THREE.Raycaster(this.camera.position, vector.sub(this.camera.position).normalize());
+		
+		var intersects = [];
+		intersects = raycaster.intersectObjects(this.scene.children);
+		
+		if (intersects.length > 0) {
+			$(document).tooltip({
+				content: "Test",
+				track: true,
+			});
+		}	
+	}, 500);
 };
 
 starsgl.MainCanvas.prototype.onMouseWheel = function(event) {

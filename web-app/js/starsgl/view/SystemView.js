@@ -1,19 +1,19 @@
 starsgl.SystemView = function(mainCanvas) {
 	this.mainCanvas = mainCanvas;
-	
+	this.activeSystemName = mainCanvas.startingSystemName;
 	this.JSON = null;
 	this.objects = [];
 };
 
 starsgl.SystemView.prototype.draw = function() {
+	var self = this;
 	this.mainCanvas.clear();
 	
-	var that = this;
 	$.ajax({
 		type: "GET",
-		url: "/starsgl/system/generateSystem",
+		url: "/starsgl/system/getByName?name=" + self.activeSystemName,
 		success: function(data, textStatus, jqXHR) {
-			that.setJSON(data);
+			self.setJSON(data);
 		},
 		async: false
 	});	
@@ -29,19 +29,19 @@ starsgl.SystemView.prototype.draw = function() {
 	this.mainCanvas.scene.add(sun);
 	
 	// planets
-	for(var i = 0; i < this.JSON.length; i++) {
+	for(var i = 0; i < this.JSON.planets.length; i++) {
 		if(i === 0) {
 			geometry = new THREE.CubeGeometry(30, 30, 30);
 			material = new THREE.MeshBasicMaterial({color: 0xFFCC33, wireframe: true});
 			var starbase = new starsgl.Starbase(geometry, material);
-			starbase.position.set(this.JSON[i].position.x, this.JSON[i].position.y + 200, this.JSON[i].position.z);
+			starbase.position.set(this.JSON.planets[i].x, this.JSON.planets[i].y + 200, this.JSON.planets[i].z);
 			this.mainCanvas.scene.add(starbase);
 		}
 		
-		geometry = new THREE.SphereGeometry(this.JSON[i].radius, 10, 10);
+		geometry = new THREE.SphereGeometry(this.JSON.planets[i].radius, 10, 10);
 		material = new THREE.MeshBasicMaterial({color: 0x66FF00, wireframe: true});
 		var planet = new starsgl.Planet(geometry, material);
-		planet.position.set(this.JSON[i].position.x, this.JSON[i].position.y, this.JSON[i].position.z);
+		planet.position.set(this.JSON.planets[i].x, this.JSON.planets[i].y, this.JSON.planets[i].z);
 		this.mainCanvas.scene.add(planet);
 		
 		// orbits
@@ -52,23 +52,24 @@ starsgl.SystemView.prototype.draw = function() {
 		var segment = null;
 		for(var j = 0; j <= resolution; j++) {
 			segment = (j * size) * Math.PI / 180;
-			geometry.vertices.push(new THREE.Vector3(Math.cos(segment) * this.JSON[i].distanceFromSun, 0, Math.sin(segment) * this.JSON[i].distanceFromSun));
+			geometry.vertices.push(new THREE.Vector3(Math.cos(segment) * this.JSON.planets[i].distanceFromSun, 0, Math.sin(segment) * this.JSON.planets[i].distanceFromSun));
 		}
 		var line = new THREE.Line(geometry, material);
 		this.mainCanvas.scene.add(line);		
 		
-		// moons
-		for(var j = 0; j < this.JSON[i].moons.length; j++) {
-			var translation = new THREE.Vector3(this.JSON[i].position.x, this.JSON[i].position.y, this.JSON[i].position.z);
-			geometry = new THREE.SphereGeometry(this.JSON[i].moons[j].radius, 10, 10);
-			material = new THREE.MeshBasicMaterial({color: 0xCCCCCC, wireframe: true});
-			var moon = new starsgl.Moon(geometry, material);
-			moon.position.set(this.JSON[i].moons[j].position.x, this.JSON[i].moons[j].position.y, this.JSON[i].moons[j].position.z);	
-			moon.translateX(translation.x);
-			moon.translateY(translation.y);
-			moon.translateZ(translation.z);	
-			this.mainCanvas.scene.add(moon);
-		}
+//		// moons
+//		var moons = this.JSON.planets[i].moons;
+//		for(var j = 0; j < moons.length; j++) {
+//			var translation = new THREE.Vector3(moons[j].x, moons[j].y, moons[j].z);
+//			geometry = new THREE.SphereGeometry(moons[j].radius, 10, 10);
+//			material = new THREE.MeshBasicMaterial({color: 0xCCCCCC, wireframe: true});
+//			var moon = new starsgl.Moon(geometry, material);
+//			moon.position.set(moons[j].x, moons[j].y, moons[j].z);	
+//			moon.translateX(translation.x);
+//			moon.translateY(translation.y);
+//			moon.translateZ(translation.z);	
+//			this.mainCanvas.scene.add(moon);
+//		}
 	}
 };
 

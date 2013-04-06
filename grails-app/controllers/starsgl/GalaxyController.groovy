@@ -1,7 +1,17 @@
 package starsgl
 
-class GalaxyController {
+import grails.converters.JSON
 
+class GalaxyController {
+	
+	def getByName() {
+		def galaxy = Galaxy.findByName("main")
+		
+		JSON.use("deep")
+		render galaxy as JSON
+	}
+	
+	// legacy generation
     def generateGalaxy() { 
 		int distance = 1000;
 		int galaxyMax = 50;
