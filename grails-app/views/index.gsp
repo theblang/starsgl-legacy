@@ -5,12 +5,12 @@
 		
 		<title>starsgl</title>
 		
-		<link rel="stylesheet" href="${resource(dir: 'css/vendor', file: 'jquery-ui-1.9.0.custom.min.css')}" type="text/css">
+		<link rel="stylesheet" href="${resource(dir: 'css/vendor', file: 'jquery-ui-1.10.2.custom.min.css')}" type="text/css">
 		<link rel="stylesheet" href="${resource(dir: 'css/vendor', file: 'jquery.contextMenu.css')}" type="text/css">
 		<link rel="stylesheet" href="${resource(dir: 'css/app', file: 'main.css')}" type="text/css">
 		
-		<g:javascript src="vendor/jquery/jquery-1.8.2.min.js" />
-		<g:javascript src="vendor/jquery/jquery-ui-1.9.0.custom.min.js" />			
+		<g:javascript src="vendor/jquery/jquery-1.9.1.min.js" />
+		<g:javascript src="vendor/jquery/jquery-ui-1.10.2.custom.min.js" />			
 	</head>
 	<body>
 		<div id="main-canvas">
