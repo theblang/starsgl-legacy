@@ -36,10 +36,31 @@
 				margin-right: auto;
 				margin-top: 10px;
 			}	
+			
+			label.align {
+				display: block;
+				float: left;
+				width: 200px;
+			}
+			
+			div.align {
+				display: inline-block;
+			}	
+			
+			div.right {
+				float: right;
+			}
+			
+			.green {
+				color: green;
+			}
+			
+			.red {
+				color: red;
+			}
+			
+					
 		</style>
-
-		<g:javascript src="vendor/jquery/jquery-1.9.1.min.js" />
-		<g:javascript src="vendor/jquery/jquery-ui-1.10.2.custom.min.js" />
     </head>
     <body id="login">
 		<audio controls="controls" autoplay="autoplay">
@@ -50,9 +71,16 @@
 		<div id="login-form">
 			<input type="text">
 			<input type="password">
-			<input id="login-submit" type="submit" value="Log in">
+			<input id="login-submit" type="submit" value="Log In">
+			<input id="new-game" type="button" value="New Game">
 		</div>
 		
+		<g:render template="/login/raceWizard" />
+		
+		<g:javascript src="vendor/jquery/jquery-1.9.1.min.js" />
+		<g:javascript src="vendor/jquery/jquery-ui-1.10.2.custom.min.js" />	
+		<g:javascript src="Login.js" />	
+				
 		<script>
 			$("input[type=submit]").button();
 

@@ -29,6 +29,7 @@ starsgl.SystemView.prototype.draw = function() {
 	this.mainCanvas.scene.add(sun);
 	
 	// planets
+	var planetJSON = this.JSON.planets // TODO: change everything to use the planetJSON reference
 	for(var i = 0; i < this.JSON.planets.length; i++) {
 		if(i === 0) {
 			geometry = new THREE.CubeGeometry(30, 30, 30);
@@ -57,19 +58,31 @@ starsgl.SystemView.prototype.draw = function() {
 		var line = new THREE.Line(geometry, material);
 		this.mainCanvas.scene.add(line);		
 		
-//		// moons
-//		var moons = this.JSON.planets[i].moons;
-//		for(var j = 0; j < moons.length; j++) {
-//			var translation = new THREE.Vector3(moons[j].x, moons[j].y, moons[j].z);
-//			geometry = new THREE.SphereGeometry(moons[j].radius, 10, 10);
-//			material = new THREE.MeshBasicMaterial({color: 0xCCCCCC, wireframe: true});
-//			var moon = new starsgl.Moon(geometry, material);
-//			moon.position.set(moons[j].x, moons[j].y, moons[j].z);	
-//			moon.translateX(translation.x);
-//			moon.translateY(translation.y);
-//			moon.translateZ(translation.z);	
-//			this.mainCanvas.scene.add(moon);
-//		}
+		// moons
+		var moonJSON = this.JSON.planets[i].moons;
+		for(var j = 0; j < moonJSON.length; j++) {
+			geometry = new THREE.SphereGeometry(moonJSON[j].radius, 10, 10);
+			material = new THREE.MeshBasicMaterial({color: 0xCCCCCC, wireframe: true});
+			var moon = new starsgl.Moon(geometry, material);
+			moon.position.set(moonJSON[j].x, moonJSON[j].y, moonJSON[j].z);	
+			this.mainCanvas.scene.add(moon);
+			
+			// orbits
+			geometry = new THREE.Geometry();
+			material = new THREE.LineBasicMaterial({color: 0xFFFFFF, opacity: 0.8});		
+			var resolution = 100;
+			var size = 360 / resolution;
+			var segment = null;
+			for(var k = 0; k <= resolution; k++) {
+				segment = (k * size) * Math.PI / 180;
+				geometry.vertices.push(new THREE.Vector3(Math.cos(segment) * moonJSON[j].distanceFromPlanet, 0, Math.sin(segment) * moonJSON[j].distanceFromPlanet));
+			}
+			var line = new THREE.Line(geometry, material);
+			line.translateX(planetJSON[i].x);
+			line.translateY(planetJSON[i].y);
+			line.translateZ(planetJSON[i].z);
+			this.mainCanvas.scene.add(line);
+		}
 	}
 };
 

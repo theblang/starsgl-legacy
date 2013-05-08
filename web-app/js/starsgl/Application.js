@@ -6,6 +6,7 @@ starsgl.Application = function() {
 		type: "GET",
 		url: "/starsgl/init/populateInMemoryDB",
 		success: function(data, textStatus, jqXHR) {
+			console.log("In memory database populated");
 		},
 		async: false
 	});		
@@ -16,10 +17,12 @@ starsgl.Application = function() {
 		url: "/starsgl/user/getByName?name=mattblang",
 		success: function(data, textStatus, jqXHR) {
 			self.user = data;
+			console.log("user:mattblang loaded")
+			console.log(data);
 		},
 		async: false
 	});
-
+	
 	this.mainCanvas = new starsgl.MainCanvas(self.user.currentSystem.name);
 	this.manufacturingCanvas = new starsgl.ManufacturingCanvas();
 	
@@ -108,4 +111,8 @@ starsgl.Application.prototype.initDOM = function() {
 	});	
 	
 	$("#build-starbase-button").button();
+	
+	// hover div
+	$("#hover").hide();
+	
 };

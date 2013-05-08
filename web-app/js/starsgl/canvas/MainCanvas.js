@@ -42,6 +42,10 @@ starsgl.MainCanvas = function(startingSystemName) {
 	this.mouseTimeout = null; // reference: http://stackoverflow.com/questions/609965/detecting-when-the-mouse-is-not-moving
 	this.container.addEventListener("mousemove", this.onMouseMove.bind(this), false);
 	$(document).on("mousewheel", this.onMouseWheel.bind(this));	
+	this.mouseDownTimestamp = null;
+	this.mouseUpTimestamp = null;
+	this.container.addEventListener("mousedown", this.onMouseDown.bind(this), false);
+	this.container.addEventListener("mouseup", this.onMouseUp.bind(this), false);
 	
 	// draw starting view
 	this.activeView.draw();
@@ -100,6 +104,32 @@ starsgl.MainCanvas.prototype.clear = function() {
 		this.scene.remove(obj);
 	}
 };
+
+starsgl.MainCanvas.prototype.onMouseDown = function() {
+	// reference: http://stackoverflow.com/questions/1360818/javascript-how-to-measure-the-milliseconds-between-mousedown-and-mouseup
+	this.mouseDownTimestamp = +new Date();
+}
+
+starsgl.MainCanvas.prototype.onMouseUp = function() {
+	this.mouseUpTimestamp = +new Date();
+	
+	if((this.mouseUpTimestamp - this.mouseDownTimestamp) < 150) {
+		var vector = new THREE.Vector3((event.clientX / window.innerWidth) * 2 - 1, - (event.clientY / window.innerHeight) * 2 + 1, 0.5);
+		this.projector.unprojectVector(vector, this.camera);
+		var raycaster = new THREE.Raycaster(this.camera.position, vector.sub(this.camera.position).normalize());
+		
+		var intersects = [];
+		intersects = raycaster.intersectObjects(this.scene.children);
+		
+		if (intersects.length > 0) {
+			var obj = intersects[0].object;			
+			
+			
+//			obj.onDblClick(this);
+//			this.focusedObject = obj; // set the application's focused object
+		}		
+	}
+}
 
 starsgl.MainCanvas.prototype.onDblClick = function(event) {
 	var vector = new THREE.Vector3((event.clientX / window.innerWidth) * 2 - 1, - (event.clientY / window.innerHeight) * 2 + 1, 0.5);
@@ -181,24 +211,29 @@ starsgl.MainCanvas.prototype.onKeyup = function(event) {
 };
 
 starsgl.MainCanvas.prototype.onMouseMove = function(event) {
-	clearTimeout(this.mouseTimeout);
-	$(document).tooltip("destroy");
+	var self = this;
 	
-	this.mouseTimeout = setTimeout(function() {
-		var vector = new THREE.Vector3((event.clientX / window.innerWidth) * 2 - 1, - (event.clientY / window.innerHeight) * 2 + 1, 0.5);
-		this.projector.unprojectVector(vector, this.camera);
-		var raycaster = new THREE.Raycaster(this.camera.position, vector.sub(this.camera.position).normalize());
+	var vector = new THREE.Vector3((event.clientX / window.innerWidth) * 2 - 1, - (event.clientY / window.innerHeight) * 2 + 1, 0.5);
+	
+	self.projector.unprojectVector(vector, self.camera);
+	var raycaster = new THREE.Raycaster(self.camera.position, vector.sub(self.camera.position).normalize());
+	
+	var intersects = [];
+	intersects = raycaster.intersectObjects(self.scene.children);
+	
+	if (intersects.length > 0) {
+		var obj = intersects[0].object;	
 		
-		var intersects = [];
-		intersects = raycaster.intersectObjects(this.scene.children);
+		$("#hover").css({
+			left: event.pageX + 20,
+			top: event.pageY
+		});
 		
-		if (intersects.length > 0) {
-			$(document).tooltip({
-				content: "Test",
-				track: true,
-			});
-		}	
-	}, 500);
+		$("#hover").text(obj.name).show();
+	}
+	else {
+		$("#hover").hide();
+	}
 };
 
 starsgl.MainCanvas.prototype.onMouseWheel = function(event) {

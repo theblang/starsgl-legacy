@@ -21,6 +21,7 @@
 				
 				<g:render template="/shipBuilder" />
 				<g:render template="/research" />
+				<g:render template="/statistics" />
 				
 				<g:render template="/planetInfo" />
 				
@@ -29,12 +30,13 @@
 				<g:render template="/optionsMenu" />
 				
 				<g:render template="/manufacturing" />
+				
+				<div id="hover"></div>
 			</div>
 		</div>
 		
 		<g:javascript src="vendor/jquery/jquery.ui.position.js" />
 		<g:javascript src="vendor/jquery/jquery.contextMenu.js" />
-		
 		<g:javascript src="vendor/three/three.min.js" />
 		<g:javascript src="vendor/three/THREEx.FullScreen.js" />
 		<g:javascript src="vendor/three/THREEx.KeyboardState.js" />
@@ -47,6 +49,8 @@
 		<g:javascript src="vendor/three/OrbitControls.js" />
 		<g:javascript src="vendor/three/ColladaLoader.js" />
 		<g:javascript src="vendor/three/tween.min.js" />
+		<g:javascript src="vendor/d3/d3.min.js" />
+		<g:javascript src="vendor/d3/nv.d3.min.js" />
 		
 		<g:javascript src="starsgl/Starsgl.js" />
 		<g:javascript src="starsgl/object/Sun.js" />
@@ -60,9 +64,11 @@
 		<g:javascript src="starsgl/canvas/MainCanvas.js" />
 		<g:javascript src="starsgl/canvas/ManufacturingCanvas.js" />		
 		<g:javascript src="starsgl/Application.js" />
+		<g:javascript src="Statistics.js" />
 		
 		<script>
 			var app = new starsgl.Application();
+			Statistics.init();
 		</script>
 	</body>
 </html>
