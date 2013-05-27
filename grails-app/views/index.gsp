@@ -15,25 +15,22 @@
 	<body>
 		<div id="main-canvas">
 			<div id="interface">
-				<div>
-					<g:render template="/mainMenu" />
+				<div id="menus">
+					<g:render template="/mainMenu" />				
 				</div>
 				
 				<g:render template="/shipBuilder" />
 				<g:render template="/research" />
-				<g:render template="/statistics" />
-				
 				<g:render template="/planetInfo" />
-				
 				<g:render template="/loading" />
 				<g:render template="/tutorial" />
 				<g:render template="/optionsMenu" />
-				
 				<g:render template="/manufacturing" />
-				
-				<div id="hover"></div>
+				<g:render template="/galaxy" />
 			</div>
 		</div>
+		
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
 		
 		<g:javascript src="vendor/jquery/jquery.ui.position.js" />
 		<g:javascript src="vendor/jquery/jquery.contextMenu.js" />
@@ -49,8 +46,6 @@
 		<g:javascript src="vendor/three/OrbitControls.js" />
 		<g:javascript src="vendor/three/ColladaLoader.js" />
 		<g:javascript src="vendor/three/tween.min.js" />
-		<g:javascript src="vendor/d3/d3.min.js" />
-		<g:javascript src="vendor/d3/nv.d3.min.js" />
 		
 		<g:javascript src="starsgl/Starsgl.js" />
 		<g:javascript src="starsgl/object/Sun.js" />
@@ -63,12 +58,9 @@
 		<g:javascript src="starsgl/view/ManufacturingView.js" />
 		<g:javascript src="starsgl/canvas/MainCanvas.js" />
 		<g:javascript src="starsgl/canvas/ManufacturingCanvas.js" />		
-		<g:javascript src="starsgl/Application.js" />
-		<g:javascript src="Statistics.js" />
 		
 		<script>
 			var app = new starsgl.Application();
-			Statistics.init();
 		</script>
 	</body>
 </html>

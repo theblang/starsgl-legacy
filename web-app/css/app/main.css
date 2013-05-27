@@ -8,6 +8,14 @@ div#interface {
 	width: 100%;
 }
 
+div#menus {
+	width: 100%;
+	text-align: center;
+}
+div#main-menu {
+	display: inline-block;
+}
+
 div#hover {
 	float: left;
 	position: absolute;
@@ -49,10 +57,6 @@ div#optionsMenu > button {
 	margin-right: auto;
 	margin-left: auto;
 	width: 300;
-}
-
-#main-menu {
-	float: right;	
 }
 
 /* planet info setup */
