@@ -1,15 +1,20 @@
-starsgl.Planet = function(geometry, material) {
+starsgl.Planet = function(geometry, material, json) {
 	THREE.Mesh.call(this);
 
 	this.geometry = geometry;
 	this.material = material;
+	this.json = json;
 };
 
 starsgl.Planet.prototype = Object.create(THREE.Mesh.prototype);
 
 starsgl.Planet.prototype.onDblClick = function() {
 	// reference: http://stackoverflow.com/questions/2435751/jquery-fade-element-does-not-show-elements-styled-visibility-hidden
-	$("#planet-info").css("visibility", "visible").hide().fadeIn("slow");			
+	$("#planet-info").css("visibility", "visible").hide().fadeIn("slow");		
+	$(document).trigger({
+		type: "starsgl.planetFocus", 
+		json: this.json
+	});
 };
 
 starsgl.Planet.prototype.onContextMenu = function() {

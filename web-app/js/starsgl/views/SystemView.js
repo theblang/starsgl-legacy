@@ -81,7 +81,7 @@ starsgl.SystemView.prototype.draw = function() {
 		
 		geometry = new THREE.SphereGeometry(this.JSON.planets[i].radius, 10, 10);
 		material = new THREE.MeshBasicMaterial({color: 0x66FF00, wireframe: true});
-		var planet = new starsgl.Planet(geometry, material);
+		var planet = new starsgl.Planet(geometry, material, this.JSON.planets[i]);
 		planet.position.set(this.JSON.planets[i].x, this.JSON.planets[i].y, this.JSON.planets[i].z);
 		this.mainCanvas.scene.add(planet);
 		

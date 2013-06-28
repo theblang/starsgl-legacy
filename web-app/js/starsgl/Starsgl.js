@@ -50,6 +50,10 @@ starsgl.Application.prototype.initRefreshListener = function() {
 		})
 		console.log("the refresh function");
 	});	
+	
+	$(document).on("starsgl.planetFocus", function(event) {
+		console.log(event.json);
+	});
 }
 
 starsgl.Application.prototype.initDOM = function() {

@@ -27,7 +27,6 @@
 				<g:render template="/tutorial" />
 				<g:render template="/optionsMenu" />
 				<g:render template="/manufacturing" />
-				<g:render template="/galaxy" />
 			</div>
 		</div>
 		
@@ -47,17 +46,17 @@
 		<g:javascript src="vendor/three/tween.min.js" />
 		
 		<g:javascript src="starsgl/Starsgl.js" />
-		<g:javascript src="starsgl/object/Sun.js" />
-		<g:javascript src="starsgl/object/Planet.js" />	
-		<g:javascript src="starsgl/object/Moon.js" />
-		<g:javascript src="starsgl/object/System.js" />
-		<g:javascript src="starsgl/object/Starbase.js" />	
-		<g:javascript src="starsgl/object/Ship.js" />
-		<g:javascript src="starsgl/view/GalaxyView.js" />
-		<g:javascript src="starsgl/view/SystemView.js" />
-		<g:javascript src="starsgl/view/ManufacturingView.js" />
-		<g:javascript src="starsgl/canvas/MainCanvas.js" />
-		<g:javascript src="starsgl/canvas/ManufacturingCanvas.js" />		
+		<g:javascript src="starsgl/objects/Sun.js" />
+		<g:javascript src="starsgl/objects/Planet.js" />	
+		<g:javascript src="starsgl/objects/Moon.js" />
+		<g:javascript src="starsgl/objects/System.js" />
+		<g:javascript src="starsgl/objects/Starbase.js" />	
+		<g:javascript src="starsgl/objects/Ship.js" />
+		<g:javascript src="starsgl/views/GalaxyView.js" />
+		<g:javascript src="starsgl/views/SystemView.js" />
+		<g:javascript src="starsgl/views/ManufacturingView.js" />
+		<g:javascript src="starsgl/canvases/MainCanvas.js" />
+		<g:javascript src="starsgl/canvases/ManufacturingCanvas.js" />		
 		
 		<script>
 			var app = new starsgl.Application();

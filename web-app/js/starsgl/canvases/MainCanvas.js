@@ -133,9 +133,7 @@ starsgl.MainCanvas.prototype.onMouseUp = function() {
 }
 
 starsgl.MainCanvas.prototype.onClick = function(event) {
-	$(document).trigger({
-		type: "starsgl.refresh"
-	});
+	$(document).trigger("starsgl.refresh");
 };
 
 starsgl.MainCanvas.prototype.onDblClick = function(event) {
@@ -161,12 +159,6 @@ starsgl.MainCanvas.prototype.onDblClick = function(event) {
 			y: obj.position.y,
 			z: obj.position.z}, 500)
 		.start();			
-		
-		new TWEEN.Tween(this.camera.position).to( {
-			x: newPoint.x,
-			y: newPoint.y,
-			z: newPoint.z}, 500)
-		.start();
 
 		obj.onDblClick(this);
 		this.focusedObject = obj; // set the application's focused object
