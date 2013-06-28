@@ -37,6 +37,7 @@ starsgl.MainCanvas = function(startingSystemName) {
 	
 	// initialize events
 	$(document).keyup(this.onKeyup.bind(this));	
+	this.container.addEventListener("click", this.onClick.bind(this), false);	
 	this.container.addEventListener("dblclick", this.onDblClick.bind(this), false);
 	this.container.addEventListener("contextmenu", this.onContextMenu.bind(this), false);
 	this.mouseTimeout = null; // reference: http://stackoverflow.com/questions/609965/detecting-when-the-mouse-is-not-moving
@@ -130,6 +131,12 @@ starsgl.MainCanvas.prototype.onMouseUp = function() {
 		}		
 	}
 }
+
+starsgl.MainCanvas.prototype.onClick = function(event) {
+	$(document).trigger({
+		type: "starsgl.refresh"
+	});
+};
 
 starsgl.MainCanvas.prototype.onDblClick = function(event) {
 	var vector = new THREE.Vector3((event.clientX / window.innerWidth) * 2 - 1, - (event.clientY / window.innerHeight) * 2 + 1, 0.5);

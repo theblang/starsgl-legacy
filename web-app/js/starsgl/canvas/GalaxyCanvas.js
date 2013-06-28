@@ -1,3 +1,5 @@
+// remove this if i decide to have 3d galaxy
+
 starsgl.ManufacturingCanvas = function() {	
 	var width = $("#galaxy-canvas").width();
 	var height = $("#galaxy-canvas").height();

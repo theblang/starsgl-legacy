@@ -39,7 +39,18 @@ starsgl.Application = function() {
 	this.manufacturingCanvas = new starsgl.ManufacturingCanvas();
 	
 	this.initDOM();		
+	this.initRefreshListener();
 };
+
+starsgl.Application.prototype.initRefreshListener = function() {
+	$(document).on("starsgl.refresh", function() {
+		var $scope = angular.element("body").scope();
+		$scope.$apply(function() {
+			$scope.test = "new message";
+		})
+		console.log("the refresh function");
+	});	
+}
 
 starsgl.Application.prototype.initDOM = function() {
 	// tutorial
@@ -63,15 +74,17 @@ starsgl.Application.prototype.initDOM = function() {
 		$("#galaxy").dialog("open");
 	});	
 	
-	$("#ship-builder-button").button();		
-	$("#ship-builder-button").click(function() {
-		$("#ship-builder").dialog("open");
-	});
+	$("#ship-builder-button")
+		.button()
+		.click(function() {
+			$("#ship-builder").dialog("open");
+		});
 	
-	$("#research-button").button();
-	$("#research-button").click(function() {
-		$("#research").dialog("open");
-	});	
+	$("#research-button")
+		.button()
+		.click(function() {
+			$("#research").dialog("open");
+		});
 	
 	// options
 	$("#optionsMenu").dialog({

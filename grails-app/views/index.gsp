@@ -1,5 +1,5 @@
 <!DOCTYPE html5>
-<html lang="en" class="no-js">
+<html lang="en" class="no-js" ng-app>
 	<head>
 		<meta charset="utf-8">
 		
@@ -10,14 +10,15 @@
 		<link rel="stylesheet" href="${resource(dir: 'css/app', file: 'main.css')}" type="text/css">
 		
 		<g:javascript src="vendor/jquery/jquery-1.9.1.min.js" />
-		<g:javascript src="vendor/jquery/jquery-ui-1.10.2.custom.min.js" />			
+		<g:javascript src="vendor/jquery/jquery-ui-1.10.2.custom.min.js" />		
+
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
+		<g:javascript src="TestCtrl.js" />
 	</head>
-	<body>
+	<body ng-controller="TestCtrl">
 		<div id="main-canvas">
 			<div id="interface">
-				<div id="menus">
-					<g:render template="/mainMenu" />				
-				</div>
+				<g:render template="/mainMenu" />				
 				
 				<g:render template="/shipBuilder" />
 				<g:render template="/research" />
@@ -29,8 +30,6 @@
 				<g:render template="/galaxy" />
 			</div>
 		</div>
-		
-		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
 		
 		<g:javascript src="vendor/jquery/jquery.ui.position.js" />
 		<g:javascript src="vendor/jquery/jquery.contextMenu.js" />
@@ -53,6 +52,7 @@
 		<g:javascript src="starsgl/object/Moon.js" />
 		<g:javascript src="starsgl/object/System.js" />
 		<g:javascript src="starsgl/object/Starbase.js" />	
+		<g:javascript src="starsgl/object/Ship.js" />
 		<g:javascript src="starsgl/view/GalaxyView.js" />
 		<g:javascript src="starsgl/view/SystemView.js" />
 		<g:javascript src="starsgl/view/ManufacturingView.js" />

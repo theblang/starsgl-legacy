@@ -8,12 +8,13 @@ div#interface {
 	width: 100%;
 }
 
-div#menus {
-	width: 100%;
-	text-align: center;
-}
 div#main-menu {
-	display: inline-block;
+	margin: 5px;
+}
+
+div#main-menu button {
+	width: 300;
+	height: 40;
 }
 
 div#hover {

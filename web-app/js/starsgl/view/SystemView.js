@@ -37,6 +37,46 @@ starsgl.SystemView.prototype.draw = function() {
 			var starbase = new starsgl.Starbase(geometry, material);
 			starbase.position.set(this.JSON.planets[i].x, this.JSON.planets[i].y + 200, this.JSON.planets[i].z);
 			this.mainCanvas.scene.add(starbase);
+			
+			// reference: http://stackoverflow.com/questions/11020405/basic-2d-colored-triangle-using-three-js
+			geometry = new THREE.Geometry(100, 100, 100);
+			var v1 = new THREE.Vector3(50, 0, 0);
+			var v2 = new THREE.Vector3(-50, 0, 0);
+			var v3 = new THREE.Vector3(0, 100, 0);
+			geometry.vertices.push(v1);
+			geometry.vertices.push(v2);
+			geometry.vertices.push(v3);
+			geometry.faces.push(new THREE.Face3(0, 2, 1));
+			geometry.faces.push(new THREE.Face3(0, 1, 2));
+			var ship = new starsgl.Ship(geometry, new THREE.MeshBasicMaterial({color: 0xFF0000}));
+			ship.position.set(0, 200, 0);
+			ship.rotation.set(90, 0, 0);
+			this.mainCanvas.scene.add(ship);
+			
+//			geometry = new THREE.Geometry();
+//			geometry.vertices.push(new THREE.Vector3(0, 0, 0));
+//			geometry.vertices.push(new THREE.Vector3(0, 100, 0));
+//			var line = new THREE.Line(geometry, new THREE.MeshBasicMaterial({color: 0xFF0000}));
+//			line.position.set(0, 200, 0);
+//			//line.rotation.set(45, 45, 45);
+//			line.scale.set(5, 5, 5);
+//			this.mainCanvas.scene.add(line);
+//			
+//			geometry = new THREE.Geometry();
+//			geometry.vertices.push(new THREE.Vector3(0, 0, 0));
+//			geometry.vertices.push(new THREE.Vector3(0, 100, 0));
+//			var line = new THREE.Line(geometry, new THREE.MeshBasicMaterial({color: 0xFF0000}));
+//			line.position.set(0, 200, 0);
+//			//line.rotation.set(45, 45, 45);
+//			line.scale.set(5, 5, 5);
+//			this.mainCanvas.scene.add(line);			
+			
+			geometry = new THREE.TetrahedronGeometry(50, 0);
+			geometry.applyMatrix(new THREE.Matrix4().makeRotationAxis(new THREE.Vector3(1, 0, -1).normalize(), Math.atan(Math.sqrt(2))));
+			var ship2 = new starsgl.Ship(geometry, new THREE.MeshBasicMaterial({color: 0xFF0000, wireframe: true}));
+			ship2.position.set(0, -400, 0);
+			ship2.scale.set(1, 2.5, 1);
+			this.mainCanvas.scene.add(ship2);
 		}
 		
 		geometry = new THREE.SphereGeometry(this.JSON.planets[i].radius, 10, 10);
