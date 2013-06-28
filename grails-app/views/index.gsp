@@ -29,7 +29,7 @@
 				<g:render template="/manufacturing" />
 			</div>
 		</div>
-		
+		testing something
 		<g:javascript src="vendor/jquery/jquery.ui.position.js" />
 		<g:javascript src="vendor/jquery/jquery.contextMenu.js" />
 		<g:javascript src="vendor/three/three.min.js" />
