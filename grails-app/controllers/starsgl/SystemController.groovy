@@ -1,13 +1,14 @@
 package starsgl
 
+import grails.converters.JSON
+
 class SystemController {
 	
 	def getByName(String name) {
 		def system = System.findByName(name)
 		
-		render(contentType: "text/json") {
-			system
-		}
+		JSON.use("deep")
+		render system as JSON
 	}
 	
 	// legacy generation
