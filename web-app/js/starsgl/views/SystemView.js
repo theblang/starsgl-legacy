@@ -53,6 +53,7 @@ starsgl.SystemView.prototype.draw = function() {
 			ship.rotation.set(90, 0, 0);
 			this.mainCanvas.scene.add(ship);
 			
+			
 //			geometry = new THREE.Geometry();
 //			geometry.vertices.push(new THREE.Vector3(0, 0, 0));
 //			geometry.vertices.push(new THREE.Vector3(0, 100, 0));
