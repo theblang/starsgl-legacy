@@ -21,6 +21,15 @@ starsgl.SystemView.prototype.draw = function() {
 	this.mainCanvas.camera.position.set(starsgl.SYSTEM_CAMERA_START_X, starsgl.SYSTEM_CAMERA_START_Y, starsgl.SYSTEM_CAMERA_START_Z);
 	this.mainCanvas.controls.center.set(0, 0, 0);
 	
+	// reusable objects
+	var texture;
+	var geometry;
+	var material;
+	var light;
+	
+	// model loader
+	var loader = new THREE.JSONLoader();
+	
 	// sun
 	var geometry = new THREE.SphereGeometry(100, 10, 10);
 	var material = new THREE.MeshBasicMaterial({color: 0xFFCC33, wireframe: true});
@@ -28,65 +37,56 @@ starsgl.SystemView.prototype.draw = function() {
 	sun.position.set(0, 0, 0);
 	this.mainCanvas.scene.add(sun);
 	
+	// lights
+	light = new THREE.PointLight(0xFFFFFF);
+	light.position.set(0, 0, 0);
+	this.mainCanvas.scene.add(light);
+	
+	light = new THREE.AmbientLight(0x555555);
+	this.mainCanvas.scene.add(light);
+	
 	// planets
 	var planetJSON = this.JSON.planets // TODO: change everything to use the planetJSON reference
 	for(var i = 0; i < this.JSON.planets.length; i++) {
 		if(i === 0) {
-			geometry = new THREE.CubeGeometry(30, 30, 30);
-			material = new THREE.MeshBasicMaterial({color: 0xFFCC33, wireframe: true});
-			var starbase = new starsgl.Starbase(geometry, material);
-			starbase.position.set(this.JSON.planets[i].x, this.JSON.planets[i].y + 200, this.JSON.planets[i].z);
-			this.mainCanvas.scene.add(starbase);
+			loader.load("models/mauriceh_spaceship_model.js", function(geometry) {
+				material = new THREE.MeshLambertMaterial(0x999999)
+				var starbase = new starsgl.Starbase(geometry, material);
+				starbase.scale.set(5, 5, 5);
+				starbase.position.set(self.JSON.planets[0].x, self.JSON.planets[0].y + 200, self.JSON.planets[0].z);
+				self.mainCanvas.scene.add(starbase);
+			});
 			
-			// reference: http://stackoverflow.com/questions/11020405/basic-2d-colored-triangle-using-three-js
-			geometry = new THREE.Geometry(100, 100, 100);
-			var v1 = new THREE.Vector3(50, 0, 0);
-			var v2 = new THREE.Vector3(-50, 0, 0);
-			var v3 = new THREE.Vector3(0, 100, 0);
-			geometry.vertices.push(v1);
-			geometry.vertices.push(v2);
-			geometry.vertices.push(v3);
-			geometry.faces.push(new THREE.Face3(0, 2, 1));
-			geometry.faces.push(new THREE.Face3(0, 1, 2));
-			var ship = new starsgl.Ship(geometry, new THREE.MeshBasicMaterial({color: 0xFF0000}));
-			ship.position.set(0, 200, 0);
-			ship.rotation.set(90, 0, 0);
-			this.mainCanvas.scene.add(ship);
+//			geometry = new THREE.CubeGeometry(30, 30, 30);
+//			material = new THREE.MeshBasicMaterial({color: 0xFFCC33, wireframe: true});
+//			var starbase = new starsgl.Starbase(geometry, material);
+//			starbase.position.set(this.JSON.planets[i].x, this.JSON.planets[i].y + 200, this.JSON.planets[i].z);
+//			this.mainCanvas.scene.add(starbase);	
 			
-			
-//			geometry = new THREE.Geometry();
-//			geometry.vertices.push(new THREE.Vector3(0, 0, 0));
-//			geometry.vertices.push(new THREE.Vector3(0, 100, 0));
-//			var line = new THREE.Line(geometry, new THREE.MeshBasicMaterial({color: 0xFF0000}));
-//			line.position.set(0, 200, 0);
-//			//line.rotation.set(45, 45, 45);
-//			line.scale.set(5, 5, 5);
-//			this.mainCanvas.scene.add(line);
-//			
-//			geometry = new THREE.Geometry();
-//			geometry.vertices.push(new THREE.Vector3(0, 0, 0));
-//			geometry.vertices.push(new THREE.Vector3(0, 100, 0));
-//			var line = new THREE.Line(geometry, new THREE.MeshBasicMaterial({color: 0xFF0000}));
-//			line.position.set(0, 200, 0);
-//			//line.rotation.set(45, 45, 45);
-//			line.scale.set(5, 5, 5);
-//			this.mainCanvas.scene.add(line);			
-			
-			geometry = new THREE.TetrahedronGeometry(50, 0);
-			geometry.applyMatrix(new THREE.Matrix4().makeRotationAxis(new THREE.Vector3(1, 0, -1).normalize(), Math.atan(Math.sqrt(2))));
-			var ship2 = new starsgl.Ship(geometry, new THREE.MeshBasicMaterial({color: 0xFF0000, wireframe: true}));
-			ship2.position.set(0, -400, 0);
-			ship2.scale.set(1, 2.5, 1);
-			this.mainCanvas.scene.add(ship2);
+			texture = THREE.ImageUtils.loadTexture("textures/Hardening_Lava_02.jpg");
+			geometry = new THREE.SphereGeometry(this.JSON.planets[i].radius, 50, 50);
+			material = new THREE.MeshPhongMaterial({map: texture});
+			var planet = new starsgl.Planet(geometry, material, this.JSON.planets[i]);
+			planet.position.set(this.JSON.planets[i].x, this.JSON.planets[i].y, this.JSON.planets[i].z);
+			this.mainCanvas.scene.add(planet);			
+		}
+		else if(i === 1) {
+			texture = THREE.ImageUtils.loadTexture("textures/Planet_texture___Cloud_by_Qzma.jpg");
+			geometry = new THREE.SphereGeometry(this.JSON.planets[i].radius, 50, 50);
+			material = new THREE.MeshPhongMaterial({map: texture});
+			var planet = new starsgl.Planet(geometry, material, this.JSON.planets[i]);
+			planet.position.set(this.JSON.planets[i].x, this.JSON.planets[i].y, this.JSON.planets[i].z);
+			this.mainCanvas.scene.add(planet);			
+		}
+		else {
+			geometry = new THREE.SphereGeometry(this.JSON.planets[i].radius, 10, 10);
+			material = new THREE.MeshBasicMaterial({color: 0x66FF00, wireframe: true});
+			var planet = new starsgl.Planet(geometry, material, this.JSON.planets[i]);
+			planet.position.set(this.JSON.planets[i].x, this.JSON.planets[i].y, this.JSON.planets[i].z);
+			this.mainCanvas.scene.add(planet);
 		}
 		
-		geometry = new THREE.SphereGeometry(this.JSON.planets[i].radius, 10, 10);
-		material = new THREE.MeshBasicMaterial({color: 0x66FF00, wireframe: true});
-		var planet = new starsgl.Planet(geometry, material, this.JSON.planets[i]);
-		planet.position.set(this.JSON.planets[i].x, this.JSON.planets[i].y, this.JSON.planets[i].z);
-		this.mainCanvas.scene.add(planet);
-		
-		// orbits
+		// orbit
 		geometry = new THREE.Geometry();
 		material = new THREE.LineBasicMaterial({color: 0xFFFFFF, opacity: 0.8});		
 		var resolution = 100;
@@ -102,13 +102,22 @@ starsgl.SystemView.prototype.draw = function() {
 		// moons
 		var moonJSON = this.JSON.planets[i].moons;
 		for(var j = 0; j < moonJSON.length; j++) {
-			geometry = new THREE.SphereGeometry(moonJSON[j].radius, 10, 10);
-			material = new THREE.MeshBasicMaterial({color: 0xCCCCCC, wireframe: true});
-			var moon = new starsgl.Moon(geometry, material);
-			moon.position.set(moonJSON[j].x, moonJSON[j].y, moonJSON[j].z);	
-			this.mainCanvas.scene.add(moon);
+			if(i === 0) {
+				geometry = new THREE.SphereGeometry(moonJSON[j].radius, 10, 10);
+				material = new THREE.MeshBasicMaterial({color: 0xCCCCCC, wireframe: true});
+				var moon = new starsgl.Moon(geometry, material);
+				moon.position.set(moonJSON[j].x, moonJSON[j].y, moonJSON[j].z);	
+				this.mainCanvas.scene.add(moon);
+			}
+			else {
+				geometry = new THREE.SphereGeometry(moonJSON[j].radius, 10, 10);
+				material = new THREE.MeshBasicMaterial({color: 0xCCCCCC, wireframe: true});
+				var moon = new starsgl.Moon(geometry, material);
+				moon.position.set(moonJSON[j].x, moonJSON[j].y, moonJSON[j].z);	
+				this.mainCanvas.scene.add(moon);				
+			}
 			
-			// orbits
+			// orbit
 			geometry = new THREE.Geometry();
 			material = new THREE.LineBasicMaterial({color: 0xFFFFFF, opacity: 0.8});		
 			var resolution = 100;
