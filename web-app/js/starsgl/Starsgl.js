@@ -10,6 +10,8 @@ starsgl.SYSTEM_CAMERA_START_Z = 3000;
 starsgl.SYSTEM_RADIUS = 50;
 starsgl.FOCUS_DISTANCE = 150;
 
+starsgl.TESTINGFORSHULTZ = 1337;
+
 starsgl.Application = function() {	
 	var self = this;
 
