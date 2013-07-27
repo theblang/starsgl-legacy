@@ -1,8 +1,6 @@
 starsgl.MainCanvas = function(startingSystemName) {	
-	this.startingSystemName = startingSystemName;
-	this.focusedObject = null;
+	this.TESTINGSOMETHINGELSE;
 	
-	// initialize three.js 
 	this.container = document.getElementById("main-canvas");
 	this.scene = new THREE.Scene();
 	
